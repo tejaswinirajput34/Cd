@@ -1,0 +1,13 @@
+// Implementation of Context Free Grammar %{ #include "y.tab.h" %} %% "0" {return ZERO;} "1" {return ONE;} [\n] {return NL;} . ; %% %{ /* Definition section */ #include<stdio.h> int flag=0;
+%} %{ int yylex();
+void yyerror();
+%} %token ONE ZERO NL /* Rule Section */ %% str1: str2 n1 { } ;
+str2: ZERO str2 ONE { } | ZERO ONE { } ; n1 : NL {return(0);} ;
+%% //driver code void main() { printf("\nEnter string (any combination of 0 and 1)\n");
+yyparse();
+if(flag==0) printf("\nEntered string is Valid for L=[0^n1^n]\n\n");
+} void yyerror() { printf("\nEntered arithmetic is Invalid for L=[0^n1^n]\n\n");
+flag=1;
+} 
+
+//output dhanu@dhanu:~$ lex pract4.l dhanu@dhanu:~$ yacc -d pract4.y dhanu@dhanu:~$ cc lex.yy.c y.tab.c -ll -ly dhanu@dhanu:~$ ./a.out Enter String(any combination of 0 and 1) 0011000011111 Entered arithmetic is invalid for L=[0^n1^n] Enter string(any combination of 0 and 1) 00001111 Entered string is valid for=[0^n1^n]
